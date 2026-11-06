@@ -24,6 +24,11 @@ func NewService(repo *Repository, store storage.Storage, cfg config.Config) *Ser
 	return &Service{repo: repo, store: store, cfg: cfg}
 }
 
+// Limits mengembalikan ukuran file maksimum dan ukuran chunk maksimum (byte).
+func (s *Service) Limits() (maxFileSize, chunkSize int64) {
+	return s.cfg.MaxFileSize, s.cfg.ChunkSize
+}
+
 type InitInput struct {
 	Filename    string `json:"filename"`
 	Size        int64  `json:"size"`

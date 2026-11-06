@@ -12,7 +12,7 @@ import (
 const schema = `
 CREATE TABLE IF NOT EXISTS uploads (
 	id TEXT PRIMARY KEY,
-	filename TEXT NO NULL,
+	filename TEXT NOT NULL,
 	size INTEGER NOT NULL,
 	mime_type TEXT NOT NULL,
 	chunk_size INTEGER NOT NULL,

@@ -19,12 +19,23 @@ func NewHandler(svc *Service) *Handler {
 }
 
 func (h *Handler) Register(mux *http.ServeMux) {
+	mux.HandleFunc("GET /api/config", h.handleConfig)
 	mux.HandleFunc("POST /api/uploads", h.handleInit)
 	mux.HandleFunc("PUT /api/uploads/{id}/chunks/{index}", h.handlePutChunk)
 	mux.HandleFunc("GET /api/uploads/{id}", h.handleStatus)
 	mux.HandleFunc("POST /api/uploads/{id}/complete", h.handleComplete) // baru
 	mux.HandleFunc("DELETE /api/uploads/{id}", h.handleCancel)          // baru
 	mux.HandleFunc("GET /api/files/{id}", h.handleDownload)
+}
+
+// handleConfig memberi tahu client batas yang berlaku supaya validasi di
+// frontend selalu sama dengan validasi di server.
+func (h *Handler) handleConfig(w http.ResponseWriter, r *http.Request) {
+	maxFileSize, chunkSize := h.svc.Limits()
+	writeJSON(w, http.StatusOK, map[string]any{
+		"maxFileSize": maxFileSize,
+		"chunkSize":   chunkSize,
+	})
 }
 
 func (h *Handler) handleInit(w http.ResponseWriter, r *http.Request) {

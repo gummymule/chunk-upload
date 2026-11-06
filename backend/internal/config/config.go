@@ -11,10 +11,13 @@ type Config struct {
 	StorageDir  string
 	MaxFileSize int64
 	ChunkSize   int64
+	// CORSOrigin adalah origin frontend yang boleh memanggil API (mis. http://localhost:3000).
+	CORSOrigin string
 }
 
 func Load() Config {
 	return Config{
+		CORSOrigin:  getEnv("CORS_ORIGIN", "http://localhost:3000"),
 		Port:        getEnv("PORT", "8080"),
 		DBPath:      getEnv("DB_PATH", "./data/app.db"),
 		StorageDir:  getEnv("STORAGE_DIR", "./data"),
